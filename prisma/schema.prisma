@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model PendingUser {
+  // id            String   @id @default(uuid(7)) @db.Uuid
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  email     String   @unique
+  password  String
+  role      UserRole
+  fullName  String
+  fcmToken  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("Pending_users")
+}
+
+model User {
+  // id                    String            @id @default(uuid(7)) @db.Uuid
+  id                    String         @id @default(auto()) @map("_id") @db.ObjectId
+  email                 String?        @unique
+  password              String?
+  role                  UserRole
+  fullName              String?
+  fcmTokens             String[]
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  lastLoginAt           DateTime       @default(now())
+  profileImage          String?
+  appleId               String?
+  loginType             UserLoginType  @default(EMAIL_PASS)
+  receivedNotifications Notification[] @relation("notificationRecieve")
+  sentNotifications     Notification[] @relation("notificationSend")
+
+  @@index([appleId])
+  @@map("users")
+}
+
+model Notification {
+  // id                  String              @id @default(uuid(7)) @db.Uuid
+  id                  String              @id @default(auto()) @map("_id") @db.ObjectId
+  title               String
+  body                String?
+  // receiverId          String?             @db.Uuid
+  receiverId          String?             @db.ObjectId
+  // senderId            String?             @db.Uuid
+  senderId            String?             @db.ObjectId
+  type                NotificationType
+  isRead              Boolean             @default(false)
+  notificationChannel NotificationChannel @default(BOTH)
+  metaData            Json?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  receiver            User?               @relation("notificationRecieve", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender              User?               @relation("notificationSend", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([isRead])
+  @@map("notifications")
+}
+
+enum UserRole {
+  CLIENT
+  SELLER
+  ADMIN
+  NOT_SET
+}
+
+enum UserLoginType {
+  GOOGLE
+  APPLE
+  EMAIL_PASS
+}
+
+enum UnitType {
+  PIECE
+  KG
+  GRAM
+  LITER
+  ML
+}
+
+enum NotificationChannel {
+  INAPP
+  PUSH
+  BOTH
+}
+
+enum NotificationType {
+  SYSTEM
+}
