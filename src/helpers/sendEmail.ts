@@ -31,7 +31,7 @@ const sendEmail = async (
 
   // Email options
   const mailOptions = {
-    from: `Liv Raico - Ecommerce: <${config.emailSender.email}>`,
+    from: `Smiley: <${config.emailSender.email}>`,
     to,
     subject,
     html,

@@ -22,7 +22,7 @@ export const accountVerification = (fullname: string, otp: string) => {
         font-weight: 600;
         color: #abc346;
       ">
-        Liv Raico - Ecommerce Account verification
+        Smiley Account verification
       </h2>
 
       <p style="margin: 0 0 12px; font-size: 15px;">

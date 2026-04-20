@@ -1,0 +1,45 @@
+### create session
+
+POST {{baseUrl}}/session/create HTTP/1.1
+Authorization: {{jabir}}
+Content-Type: application/json
+
+{
+  "type": "MORNING"
+}
+
+
+### get all sessions
+
+GET {{baseUrl}}/session/all?page=1&limit=20&year=2026&day=2026-04-18&month=2026-04 HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get weekly sessions
+
+GET {{baseUrl}}/session/weekly HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get this week total
+
+GET {{baseUrl}}/session/weekly-count HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get analytic stats
+
+GET {{baseUrl}}/session/analytic-stats HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get morning vs night stat
+
+GET {{baseUrl}}/session/morning-vs-night HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get current streak
+
+GET {{baseUrl}}/session/current-streak HTTP/1.1
+Authorization: {{jabir}}

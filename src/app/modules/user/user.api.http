@@ -1,26 +1,14 @@
-### get all users
-
-GET {{baseUrl}}/user/all HTTP/1.1
-
-
-### get user detais
-
-# user/:userId
-
-GET {{baseUrl}}/user/69b28477dd104bd62ad45b4b HTTP/1.1
-
-
 ### create user
 
 POST {{baseUrl}}/user/create HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "client.default@gmail.com",
+  "email": "shahjalal.backend@gmail.com",
   "fcmToken": "fcm1",
-  "fullName": "Client Ahmed",
+  "fullName": "Jabir Bin Hasan",
   "password": "Aw32@320",
-  "role": "CLIENT"
+  "timeZone": "Asia/Dhaka"
 }
 
 
@@ -30,6 +18,20 @@ POST {{baseUrl}}/user/verify HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "client.default@gmail.com",
-  "otp": "7306"
+  "email": "deleted@gmail.com",
+  "otp": "8501"
 }
+
+
+### get all users
+
+GET {{baseUrl}}/user/all HTTP/1.1
+Authorization: {{admin}}
+
+
+### get user details
+
+# user/:userId
+
+GET {{baseUrl}}/user/69b28477dd104bd62ad45b4b HTTP/1.1
+Authorization: {{USER}}

@@ -3,6 +3,7 @@ import { Router } from "express";
 import { userRoutes } from "../modules/user/user.routes";
 import { authRoutes } from "../modules/auth/auth.routes";
 import { notificationRoutes } from "../modules/notification/notification.routes";
+import { sessionRoutes } from "../modules/session/session.routes";
 
 type TAllRoutes = {
   path: string;
@@ -20,6 +21,12 @@ const allRoutes: TAllRoutes[] = [
     path: "/auth",
     route: authRoutes,
   },
+
+  {
+    path: "/session",
+    route: sessionRoutes,
+  },
+
   {
     path: "/notify",
     route: notificationRoutes,

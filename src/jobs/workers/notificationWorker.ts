@@ -25,7 +25,7 @@ new Worker(
         const totalAmount = payload.totalAmount;
 
         // Send notification to the seller
-        await sendSingleNotification(
+        /* await sendSingleNotification(
           sellerId, // receiverId
           "New Order Received", // title
           `Your products have been ordered: ${productSummary}. Total: $${totalAmount}`, // body
@@ -36,7 +36,7 @@ new Worker(
             productIds: payload.items.map((i: any) => i.productId),
             orderItemIds: payload.orderItemIds,
           }, // metaData
-        );
+        ); */
 
         break;
       }
@@ -44,7 +44,7 @@ new Worker(
 
       // new connection request notif
       //w: (start)╭────────────  newConnection ────────────╮
-      case "newConnection": {
+      /* case "newConnection": {
         const { receiverId, userId, fullname, requestId } = data;
         await sendSingleNotification(
           receiverId,
@@ -58,11 +58,11 @@ new Worker(
           userId, // senderId
         );
         break;
-      }
+      } */
       //w: (end)  ╰────────────  newConnection ────────────╯
 
       //w: (start)╭────────────  requestAcceptance ────────────╮
-      case "requestAcceptance": {
+      /* case "requestAcceptance": {
         const { senderId, fullname, receiverId, requestId } = data;
         await sendSingleNotification(
           senderId, // notification receiverId
@@ -76,7 +76,7 @@ new Worker(
           },
           receiverId, // notification senderid
         );
-      }
+      } */
       //w: (end)  ╰────────────  requestAcceptance ────────────╯
     }
   },

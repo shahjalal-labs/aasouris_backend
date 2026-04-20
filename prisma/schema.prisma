@@ -16,10 +16,11 @@ model PendingUser {
   role      UserRole
   fullName  String
   fcmToken  String?
+  timeZone  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("Pending_users")
+  @@map("pending_users")
 }
 
 model User {
@@ -29,6 +30,11 @@ model User {
   password              String?
   role                  UserRole
   fullName              String?
+  timeZone              String?
+  choosenHero           String?
+  morningReminder       String?
+  nightReminder         String?
+  starEarned            Int            @default(0)
   fcmTokens             String[]
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
@@ -38,9 +44,21 @@ model User {
   loginType             UserLoginType  @default(EMAIL_PASS)
   receivedNotifications Notification[] @relation("notificationRecieve")
   sentNotifications     Notification[] @relation("notificationSend")
+  sessions              Session[]
 
   @@index([appleId])
   @@map("users")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserLoginType {
+  GOOGLE
+  APPLE
+  EMAIL_PASS
 }
 
 model Notification {
@@ -65,27 +83,6 @@ model Notification {
   @@map("notifications")
 }
 
-enum UserRole {
-  CLIENT
-  SELLER
-  ADMIN
-  NOT_SET
-}
-
-enum UserLoginType {
-  GOOGLE
-  APPLE
-  EMAIL_PASS
-}
-
-enum UnitType {
-  PIECE
-  KG
-  GRAM
-  LITER
-  ML
-}
-
 enum NotificationChannel {
   INAPP
   PUSH
@@ -94,4 +91,34 @@ enum NotificationChannel {
 
 enum NotificationType {
   SYSTEM
+}
+
+model Session {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  type      SessionType
+  userId    String      @db.ObjectId
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dateKey   String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@unique([userId, dateKey, type])
+  @@index([createdAt])
+  @@map("sessions")
+}
+
+model level {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  requiredStars Int
+  order         Int      @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("levels")
+}
+
+enum SessionType {
+  MORNING
+  NIGHT
 }

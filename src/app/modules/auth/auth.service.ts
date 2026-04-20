@@ -61,10 +61,10 @@ const loginUser = async (payload: TLoginUserSchema) => {
     userId: user.id,
     role: user.role,
     accessToken,
-    loginType: user.loginType,
-    ...(user.role === "SELLER" && {
+    /* ...(user.role === "SELLER" && {
       isSellerProfileComplete: false, // here condition will apply,
-    }),
+    }), */
+    isProfileComplete: user.morningReminder ? true : false,
   };
 };
 //w: (end)  ╰──────────── loginUser ────────────╯
@@ -99,7 +99,7 @@ const googleLogin = async (payload: TGoogleLoginSchema) => {
       data: {
         fullName: payload.fullname,
         email: payload.email,
-        role: UserRole.NOT_SET,
+        role: UserRole.USER,
         loginType: UserLoginType.GOOGLE,
         ...(payload.fcmToken
           ? {
@@ -118,10 +118,7 @@ const googleLogin = async (payload: TGoogleLoginSchema) => {
     userId: user.id,
     role: user.role,
     accessToken,
-    loginType: user.loginType,
-    ...(user.role === "SELLER" && {
-      isSellerProfileComplete: false, // here condition will apply,
-    }),
+    isProfileComplete: user.morningReminder ? true : false,
   };
 };
 //w: (end)  ╰──────────── googleLogin ────────────╯
@@ -161,7 +158,7 @@ const appleLogin = async (payload: TAppleLoginSchema) => {
               fcmTokens: [payload.fcmToken],
             }
           : {}),
-        role: UserRole.NOT_SET,
+        role: UserRole.USER,
         loginType: UserLoginType.APPLE,
         appleId: payload.appleId,
       },
@@ -176,10 +173,7 @@ const appleLogin = async (payload: TAppleLoginSchema) => {
     userId: user.id,
     role: user.role,
     accessToken,
-    loginType: user.loginType,
-    ...(user.role === "SELLER" && {
-      isSellerProfileComplete: false, // here condition will apply,
-    }),
+    isProfileComplete: user.morningReminder ? true : false,
   };
 };
 //w: (end)  ╰──────────── appleLogin ────────────╯
@@ -195,9 +189,11 @@ const fetchMyProfile = async (userId: string) => {
       email: true,
       fullName: true,
       role: true,
-      lastLoginAt: true,
       profileImage: true,
-      loginType: true,
+      choosenHero: true,
+      morningReminder: true,
+      nightReminder: true,
+      timeZone: true,
       createdAt: true,
     },
   });
@@ -211,14 +207,7 @@ const fetchMyProfile = async (userId: string) => {
 //w: (start)╭──────────── updateMyProfile ────────────╮
 // added user stripe account
 
-const updateProfile = async (
-  userId: string,
-  payload: TUpdateProfileSchema,
-  files?: {
-    profileimage?: Express.Multer.File[];
-    shopimage?: Express.Multer.File[];
-  },
-) => {
+const updateProfile = async (userId: string, payload: TUpdateProfileSchema) => {
   // Fetch current user info
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -226,20 +215,6 @@ const updateProfile = async (
   });
 
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-
-  if (user.role !== "NOT_SET" && payload.role)
-    throw new ApiError(httpStatus.BAD_REQUEST, "You can set role only once");
-
-  // Prepare file URLs before transaction
-  if (files?.profileimage?.length) {
-    const profileUrl = await uploadInSpace(files.profileimage[0], "profile");
-    payload.profileimage = profileUrl;
-  }
-
-  if (files?.shopimage?.length) {
-    const shopUrl = await uploadInSpace(files.shopimage[0], "shop");
-    payload.shopimage = shopUrl;
-  }
 
   // Update user with payload
   const updatedUser = await prisma.user.update({
@@ -254,6 +229,38 @@ const updateProfile = async (
   return updatedUser;
 };
 //w: (end)  ╰──────────── updateMyProfile ────────────╯
+
+//w: (start)╭──────────── updateProfileImage ────────────╮
+const updateProfileImage = async (
+  userId: string,
+  file: Express.Multer.File,
+) => {
+  if (!file)
+    throw new ApiError(httpStatus.BAD_REQUEST, "Image file not provided.");
+
+  const imageUrl = await uploadInSpace(file, "users/profileImage");
+
+  try {
+    return await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        profileImage: imageUrl,
+      },
+      select: {
+        id: true,
+        fullName: true,
+        profileImage: true,
+      },
+    });
+  } catch (error: any) {
+    if (error.code === "P2025")
+      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    throw error;
+  }
+};
+//w: (end)  ╰──────────── updateProfileImage ────────────╯
 
 //w: (start)╭──────────── changePassword ────────────╮
 const changePassword = async (
@@ -397,6 +404,30 @@ const resetPassword = async (
 };
 //w: (end)  ╰──────────── resetPassword ────────────╯
 
+//w: (start)╭──────────── deleteMyAccount ────────────╮
+const deleteMyAccount = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+  return prisma.user.delete({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+    },
+  });
+};
+//w: (end)  ╰──────────── deleteMyAccount ────────────╯
+
 export const authService = {
   loginUser,
   googleLogin,
@@ -407,4 +438,6 @@ export const authService = {
   sendForgotPassOtp,
   verifyForgotPasswordOtp,
   resetPassword,
+  deleteMyAccount,
+  updateProfileImage,
 };

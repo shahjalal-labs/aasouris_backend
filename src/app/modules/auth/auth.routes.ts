@@ -78,4 +78,13 @@ router.patch(
   authController.updateProfile,
 );
 
+router.delete("/delete-account", auth(), authController.deleteMyAccount);
+
+router.patch(
+  "/update-profile-image",
+  fileUploader.profileImage,
+  auth(),
+  authController.updateProfileImage,
+);
+
 export const authRoutes = router;

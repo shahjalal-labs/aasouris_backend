@@ -1,6 +1,20 @@
 import { UserRole } from "@prisma/client";
 import { z } from "zod";
 
+export const timeZoneSchema = z.string().refine(
+  (tz) => {
+    try {
+      Intl.DateTimeFormat(undefined, { timeZone: tz });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+  {
+    message: "Invalid timezone",
+  },
+);
+
 //w: (start)╭──────────── createUser ────────────╮
 const createUserSchema = z
   .object({
@@ -18,10 +32,10 @@ const createUserSchema = z
       )
       .regex(/^\S+$/, "Password must not contain spaces"),
 
-    role: z.enum([UserRole.SELLER, UserRole.CLIENT]),
+    role: z.nativeEnum(UserRole).default("USER"),
     fullName: z.string().min(2),
     fcmToken: z.string(),
-    // seller info optional
+    timeZone: timeZoneSchema,
   })
   .strict();
 

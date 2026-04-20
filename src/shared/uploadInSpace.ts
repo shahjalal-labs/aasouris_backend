@@ -2,7 +2,7 @@ import { S3Client, S3ClientConfig, ObjectCannedACL } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import path from "path";
 
-const DO_CONFIG = {
+export const DO_CONFIG = {
   endpoint: "https://api.zenexcloud.com",
 
   region: "s3v4",

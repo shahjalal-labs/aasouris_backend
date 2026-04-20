@@ -1,5 +1,6 @@
 import { UserRole } from "@prisma/client";
 import { z } from "zod";
+import { timeZoneSchema } from "../user/user.validation";
 
 //w: (start)╭──────────── loginUser ────────────╮
 const loginUserSchema = z.object({
@@ -118,19 +119,19 @@ export type TVerifyForgotPasswordOtpSchema = z.infer<
 //w: (end)  ╰──────────── verifyForgotPasswordOtp ────────────╯
 
 //w: (start)╭──────────── updateProfile ────────────╮
+
+const timeOnlySchema = z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+  message: "Time must be in HH:mm format (e.g. 08:00/14:33)",
+});
+
 const updateProfileSchema = z
   .object({
     role: z.nativeEnum(UserRole),
-    fullname: z.string().min(2).max(30),
-    whatsapp: z.string().min(2).max(30),
-    shopname: z.string().min(2).max(50),
-    cellphone: z.string().regex(/^[0-9+\-\s]{7,20}$/, "Invalid phone number"),
-    shopaddress: z.string().min(2).max(200),
-    shopLatitude: z.number(),
-    shopLongitude: z.number(),
-    profileimage: z.string().url(),
-    shopimage: z.string().url(),
-    stripeAccountId: z.string().optional(),
+    fullName: z.string().min(2).max(30),
+    timeZone: timeZoneSchema,
+    choosenHero: z.string().trim().min(2).max(100),
+    morningReminder: timeOnlySchema,
+    nightReminder: timeOnlySchema,
   })
   .strict()
   .partial()
@@ -142,13 +143,12 @@ const updateProfileSchema = z
       });
     }
 
-    // if only image provide then it's creating issue
-    /* if (!Object.keys(val).length) {
+    if (!Object.keys(val).length) {
       ctx.addIssue({
         code: "custom",
         message: "No field given for update",
       });
-    } */
+    }
   });
 
 export type TUpdateProfileSchema = z.infer<typeof updateProfileSchema>;

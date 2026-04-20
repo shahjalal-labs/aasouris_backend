@@ -4,8 +4,8 @@ POST {{baseUrl}}/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mir@gmail.com",
-  "password": "Abc123!@"
+  "email": "jabir@gmail.com",
+  "password": "Aw32@320"
 }
 
 
@@ -37,11 +37,11 @@ Content-Type: application/json
 ### change password
 
 PATCH {{baseUrl}}/auth/change-pass HTTP/1.1
-Authorization: {{shahjalal}}
+Authorization: {{jabir}}
 
 {
   "newPassword": "Aw32@320",
-  "oldPassword": "Aw32@320am"
+  "oldPassword": "Aw32@320"
 }
 
 
@@ -51,7 +51,7 @@ POST {{baseUrl}}/auth/send-forgot-otp HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mir@gmail.com"
+  "email": "imran@gmail.com"
 }
 
 
@@ -62,14 +62,14 @@ Content-Type: application/json
 
 {
   "email": "mir@gmail.com",
-  "otp": "7652"
+  "otp": "2980"
 }
 
 
 ### reset password
 
 POST {{baseUrl}}/auth/reset-password HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YjdhNGI0YWFkNDY4M2JjZjFmZjQ3ZCIsImVtYWlsIjoibWlyQGdtYWlsLmNvbSIsImlhdCI6MTc3MzY0OTg5MCwiZXhwIjoxNzc0OTQ1ODkwfQ.5jOIGwfb41PLBJG4riLK9kZKTE4dkJCGssoEhPPRN9w
+Authorization: {{forgotToken}}
 Content-Type: application/json
 
 {
@@ -80,15 +80,36 @@ Content-Type: application/json
 ### fetch my profile
 
 GET {{baseUrl}}/auth/me HTTP/1.1
-Authorization: {{client}}
+Authorization: {{jabir}}
 
 
 ### update my profile
 
 PATCH {{baseUrl}}/auth/me/update HTTP/1.1
-Authorization: {{client}}
+Authorization: {{jabir}}
 Content-Type: application/json
 
 {
-  "fullname": "Client Ahmed"
+  "choosenHero": "Iron Man",
+  "fullName": "Jabir Bin Hasan",
+  "morningReminder": "08:00",
+  "nightReminder": "22:30",
+  "timeZone": "Asia/Dhaka"
+}
+
+
+### delete my account
+
+DELETE {{baseUrl}}/auth/delete-account HTTP/1.1
+Authorization: {{jabir}}
+
+
+### update profile image
+
+PATCH {{baseUrl}}/auth/update-profile-image HTTP/1.1
+Authorization: {{jabir}}
+Content-Type: application/form-data
+
+{
+  "profileImage": "upload from postman"
 }

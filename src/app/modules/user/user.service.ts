@@ -8,6 +8,7 @@ import { generateOTP } from "../../../helpers/generateOtp";
 import { redisOtpService } from "../../../shared/redis-services/otp.service";
 import { emailQueue } from "../../../jobs/queues/emailQueue";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import { logger } from "../../../shared/logger";
 
 //w: (start)╭──────────── createPendingUser ────────────╮
 const createPendingUser = async (payload: TCreateUserSchema) => {
@@ -31,6 +32,7 @@ const createPendingUser = async (payload: TCreateUserSchema) => {
     },
     create: {
       ...rest,
+      // role: "USER",
       password: await hashPassword(password),
     },
   });
@@ -109,7 +111,6 @@ const verifyPendingUser = async (email: string, otp: string) => {
     userId: verifiedUser.id,
     role: verifiedUser.role,
     accessToken,
-    loginType: verifiedUser.loginType,
   };
 };
 //w: (end)  ╰──────────── verifyPendingUser ────────────╯
@@ -135,11 +136,13 @@ const getUserDetails = async (userId: string) => {
         fullName: true,
         lastLoginAt: true,
         profileImage: true,
+        choosenHero: true,
+        starEarned: true,
       },
     }),
   ]);
 
-  if (!result) throw new ApiError(httpStatus.NOT_FOUND, "User/Shop not found");
+  if (!result) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   return result;
 };
 //w: (end)  ╰──────────── getUserDetails ────────────╯

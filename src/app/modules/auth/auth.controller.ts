@@ -22,7 +22,7 @@ const googleLogin = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Google logged in successfully!",
+    message: "Google logged in successful",
     data: result,
   });
 });
@@ -34,7 +34,7 @@ const appleLogin = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Apple logged in successfully!",
+    message: "Apple logged in successful",
     data: result,
   });
 });
@@ -70,12 +70,7 @@ const fetchMyProfile = catchAsync(async (req, res) => {
 const updateProfile = catchAsync(async (req, res) => {
   const { id: userId } = req.user;
 
-  const files = req.files as {
-    profileimage?: Express.Multer.File[];
-    shopimage?: Express.Multer.File[];
-  };
-
-  const result = await authService.updateProfile(userId, req.body, files);
+  const result = await authService.updateProfile(userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -139,6 +134,38 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 //w: (end)  ╰──────────── resetPassword ────────────╯
 
+//w: (start)╭──────────── deleteMyAccount ────────────╮
+const deleteMyAccount = catchAsync(async (req, res) => {
+  const { id: userId } = req.user;
+
+  const result = await authService.deleteMyAccount(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User deleted successfully",
+    data: result,
+  });
+});
+//w: (end)  ╰──────────── deleteMyAccount ────────────╯
+
+//w: (start)╭──────────── updateProfileImage ────────────╮
+const updateProfileImage = catchAsync(async (req, res) => {
+  const { id: userId } = req.user;
+
+  const file = req.file;
+
+  const result = await authService.updateProfileImage(userId, file!);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Profile image updated successfully",
+    data: result,
+  });
+});
+//w: (end)  ╰──────────── updateProfileImage ────────────╯
+
 export const authController = {
   loginUser,
   googleLogin,
@@ -149,4 +176,6 @@ export const authController = {
   sendForgotPassOtp,
   verifyForgotPasswordOtpCode,
   resetPassword,
+  deleteMyAccount,
+  updateProfileImage,
 };

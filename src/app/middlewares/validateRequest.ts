@@ -31,7 +31,8 @@ const validateRequest =
   (schema: ZodTypeAny) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await schema.parseAsync(req.body);
+      const validatedData = await schema.parseAsync(req.body);
+      req.body = validatedData;
       return next();
     } catch (err) {
       if (err instanceof ZodError) {

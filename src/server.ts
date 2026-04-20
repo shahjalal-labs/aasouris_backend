@@ -2,12 +2,10 @@ import { Server } from "http";
 import app from "./app";
 import config from "./config";
 import { logger } from "./shared/logger";
-import seedSuperAdmin from "./app/db";
 async function main() {
   const server: Server = app.listen(config.port, () => {
     // console.info(`✅ Server is running on http://localhost:${config.port}`);
     logger.info(`✅ Server is running on port:${config.port}`);
-    seedSuperAdmin();
   });
 
   const exitHandler = () => {
