@@ -26,4 +26,6 @@ router.get("/morning-vs-night", sessionController.getMorningVsNight);
 
 router.get("/current-streak", sessionController.getCurrentStreak);
 
+router.get("/star-count", sessionController.getStarCount);
+
 export const sessionRoutes = router;

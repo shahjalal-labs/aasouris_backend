@@ -5,7 +5,7 @@ Authorization: {{jabir}}
 Content-Type: application/json
 
 {
-  "type": "MORNING"
+  "type": "NIGHT"
 }
 
 
@@ -42,4 +42,10 @@ Authorization: {{jabir}}
 ### get current streak
 
 GET {{baseUrl}}/session/current-streak HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get star count
+
+GET {{baseUrl}}/session/star-count HTTP/1.1
 Authorization: {{jabir}}

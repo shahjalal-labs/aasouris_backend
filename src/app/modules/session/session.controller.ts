@@ -103,6 +103,19 @@ const getCurrentStreak = catchAsync(async (req, res) => {
   });
 });
 
+const getStarCount = catchAsync(async (req, res) => {
+  const { id: userId } = req.user;
+
+  const result = await sessionService.getStarCount(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Start count retrieved successfully",
+    data: result,
+  });
+});
+
 export const sessionController = {
   createSession,
   getAllSessions,
@@ -111,4 +124,5 @@ export const sessionController = {
   getAnalyticStats,
   getMorningVsNight,
   getCurrentStreak,
+  getStarCount,
 };

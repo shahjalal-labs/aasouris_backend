@@ -113,3 +113,15 @@ Content-Type: application/form-data
 {
   "profileImage": "upload from postman"
 }
+
+
+### get current level
+
+GET {{baseUrl}}/auth/current-level HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get all levels
+
+GET {{baseUrl}}/auth/all-level HTTP/1.1
+Authorization: {{jabir}}

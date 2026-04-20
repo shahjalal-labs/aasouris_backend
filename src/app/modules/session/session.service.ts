@@ -20,43 +20,39 @@ import { paginationHelper, TOptions } from "../../../shared/paginationHelper";
 import { Prisma, SessionType } from "@prisma/client";
 
 const createSession = async (userId: string, payload: TCreateSession) => {
-  const now = new Date();
-  const dateKey = format(now, "yyyy-MM-dd");
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { id: true },
-  });
-
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-  }
+  const dateKey = format(new Date(), "yyyy-MM-dd");
 
   try {
-    const newSession = await prisma.session.create({
-      data: {
-        ...payload,
-        userId,
-        dateKey,
-      },
-      select: {
-        id: true,
-        type: true,
-      },
-    });
+    return await prisma.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({
+        where: { id: userId },
+        select: { starEarned: true },
+      });
 
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        starEarned: {
-          increment: 10,
+      if (!user) {
+        throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+      }
+
+      const session = await tx.session.create({
+        data: { ...payload, userId, dateKey },
+        select: { id: true, type: true },
+      });
+
+      const newStar = (user.starEarned ?? 0) + 10;
+
+      await tx.user.update({
+        where: { id: userId },
+        data: {
+          starEarned: newStar,
         },
-      },
-    });
+        select: {
+          id: true,
+          starEarned: true,
+        },
+      });
 
-    return newSession;
+      return session;
+    });
   } catch (err: any) {
     if (err.code === "P2002") {
       throw new ApiError(httpStatus.CONFLICT, "Session already exists");
@@ -393,6 +389,26 @@ const getCurrentStreak = async (userId: string) => {
   };
 };
 
+const getStarCount = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      starEarned: true,
+      fullName: true,
+    },
+  });
+
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+  console.log(user);
+
+  return {
+    starEarned: user.starEarned,
+  };
+};
+
 export const sessionService = {
   createSession,
   getAllSessions,
@@ -401,4 +417,5 @@ export const sessionService = {
   getAnalyticStats,
   getMorningVsNight,
   getCurrentStreak,
+  getStarCount,
 };
