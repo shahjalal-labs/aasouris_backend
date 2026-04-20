@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "dash_dash_backend",
+      name: "smiley_aasouris_backend",
 
       script: "./dist/server.js",
 
@@ -13,7 +13,7 @@ module.exports = {
     },
 
     {
-      name: "dash_dash_emailworker",
+      name: "smiley_aasouris_emailworker",
 
       script: "./dist/jobs/workers/emailWorker.js",
 
@@ -25,7 +25,7 @@ module.exports = {
     },
 
     {
-      name: "dash_dash_notifications_worker",
+      name: "smiley_aasouris_notifications_worker",
 
       script: "./dist/jobs/workers/notificationWorker.js",
 
