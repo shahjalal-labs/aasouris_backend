@@ -1,6 +1,7 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiErrors";
 import prisma from "../../../shared/prisma";
+import { sessionService } from "../session/session.service";
 
 const getAllLevels = async () => {
   return await prisma.level.findMany({
@@ -78,7 +79,26 @@ const getCurrentLevel = async (userId: string) => {
   });
 };
 
+const getBadge = async (userId: string) => {
+  const { currentStreak } = await sessionService.getCurrentStreak(userId);
+
+  let badge: "gold" | "silver" | "bronze" | null = null;
+
+  if (currentStreak >= 30) {
+    badge = "gold";
+  } else if (currentStreak >= 7) {
+    badge = "silver";
+  } else if (currentStreak >= 3) {
+    badge = "bronze";
+  }
+
+  return {
+    badge,
+  };
+};
+
 export const levelService = {
   getAllLevels,
   getCurrentLevel,
+  getBadge,
 };

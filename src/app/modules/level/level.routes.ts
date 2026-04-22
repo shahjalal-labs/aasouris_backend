@@ -8,4 +8,6 @@ router.get("/all-level", auth(), levelController.getAllLevels);
 
 router.get("/current-level", auth(), levelController.getCurrentLevel);
 
+router.get("/badge", auth(), levelController.getBadge);
+
 export const levelRoutes = router;

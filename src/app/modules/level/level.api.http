@@ -8,3 +8,9 @@ Authorization: {{jabir}}
 
 GET {{baseUrl}}/level/current-level HTTP/1.1
 Authorization: {{jabir}}
+
+
+### get badge
+
+GET {{baseUrl}}/level/badge HTTP/1.1
+Authorization: {{jabir}}
