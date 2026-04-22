@@ -87,8 +87,5 @@ router.patch(
   authController.updateProfileImage,
 );
 
-router.get("/current-level", auth(), authController.getCurrentLevel);
-
-router.get("/all-level", auth(), authController.getAllLevels);
 
 export const authRoutes = router;

@@ -1,0 +1,10 @@
+### get all levels
+
+GET {{baseUrl}}/level/all-level HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get current level
+
+GET {{baseUrl}}/level/current-level HTTP/1.1
+Authorization: {{jabir}}

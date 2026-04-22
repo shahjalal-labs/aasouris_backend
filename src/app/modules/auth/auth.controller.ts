@@ -167,27 +167,6 @@ const updateProfileImage = catchAsync(async (req, res) => {
 });
 //w: (end)  ╰──────────── updateProfileImage ────────────╯
 
-const getCurrentLevel = catchAsync(async (req, res) => {
-  const { id: userId } = req.user;
-  const result = await authService.getCurrentLevel(userId);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Current level retrieved successfully",
-    data: result,
-  });
-});
-
-const getAllLevels = catchAsync(async (_req, res) => {
-  const result = await authService.getAllLevels();
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "All levels retrieved successfully",
-    data: result,
-  });
-});
-
 export const authController = {
   loginUser,
   googleLogin,
@@ -200,6 +179,4 @@ export const authController = {
   resetPassword,
   deleteMyAccount,
   updateProfileImage,
-  getCurrentLevel,
-  getAllLevels,
 };
