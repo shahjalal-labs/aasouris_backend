@@ -4,6 +4,7 @@ import { logger } from "../../../shared/logger";
 import prisma from "../../../shared/prisma";
 import { TCreateSession } from "./session.validation";
 import {
+  addDays,
   differenceInDays,
   endOfDay,
   endOfMonth,
@@ -16,22 +17,31 @@ import {
   startOfYear,
   subDays,
 } from "date-fns";
+
+import { formatInTimeZone } from "date-fns-tz";
+
 import { paginationHelper, TOptions } from "../../../shared/paginationHelper";
 import { Prisma, SessionType } from "@prisma/client";
 
 const createSession = async (userId: string, payload: TCreateSession) => {
-  const dateKey = format(new Date(), "yyyy-MM-dd");
+  // const dateKey = format(new Date(), "yyyy-MM-dd");
 
   try {
     return await prisma.$transaction(async (tx) => {
       const user = await tx.user.findUnique({
         where: { id: userId },
-        select: { starEarned: true },
+        select: { starEarned: true, timeZone: true },
       });
 
       if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, "User not found");
       }
+
+      const dateKey = formatInTimeZone(
+        new Date(),
+        user.timeZone || "UTC",
+        "yyyy-MM-dd",
+      );
 
       const session = await tx.session.create({
         data: { ...payload, userId, dateKey },
@@ -61,7 +71,8 @@ const createSession = async (userId: string, payload: TCreateSession) => {
   }
 };
 
-const getAllSessions = async (
+// break on timezone issue
+/* const getAllSessions = async (
   userId: string,
   paginations: TOptions,
   filter?: {
@@ -132,7 +143,103 @@ const getAllSessions = async (
       select: {
         id: true,
         type: true,
-        createdAt: true,
+        // createdAt: true,
+        dateKey: true,
+      },
+    }),
+
+    prisma.session.count({
+      where: whereClause,
+    }),
+  ]);
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+    data: sessions,
+  };
+}; */
+
+const getAllSessions = async (
+  userId: string,
+  paginations: TOptions,
+  filter?: {
+    day?: string;
+    month?: string;
+    year?: string;
+  },
+) => {
+  const { page, limit, skip } =
+    paginationHelper.calcalutePagination(paginations);
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true },
+  });
+
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+  const whereClause: Prisma.SessionWhereInput = { userId };
+
+  const andClause: Prisma.SessionWhereInput[] = [];
+
+  // day filter
+  if (filter?.day) {
+    andClause.push({
+      dateKey: filter.day, // "2026-04-16"
+    });
+  }
+
+  // month filter
+  if (filter?.month) {
+    const start = new Date(`${filter.month}-01`);
+    const end = endOfMonth(start);
+
+    const startKey = format(start, "yyyy-MM-dd");
+    const endKey = format(end, "yyyy-MM-dd");
+
+    andClause.push({
+      dateKey: {
+        gte: startKey,
+        lte: endKey,
+      },
+    });
+  }
+
+  // year filter
+  if (filter?.year) {
+    const start = new Date(`${filter.year}-01-01`);
+    const end = endOfYear(start);
+
+    const startKey = format(start, "yyyy-MM-dd");
+    const endKey = format(end, "yyyy-MM-dd");
+
+    andClause.push({
+      dateKey: {
+        gte: startKey,
+        lte: endKey,
+      },
+    });
+  }
+
+  if (andClause.length) whereClause.AND = andClause;
+
+  const [sessions, total] = await Promise.all([
+    prisma.session.findMany({
+      where: whereClause,
+      skip,
+      take: limit,
+      select: {
+        id: true,
+        type: true,
+        dateKey: true,
+      },
+      orderBy: {
+        dateKey: "desc",
       },
     }),
 
@@ -152,7 +259,8 @@ const getAllSessions = async (
   };
 };
 
-const getWeeklySessions = async (userId: string) => {
+// timezone issue
+/* const getWeeklySessions = async (userId: string) => {
   const userCount = await prisma.user.count({
     where: {
       id: userId,
@@ -183,9 +291,52 @@ const getWeeklySessions = async (userId: string) => {
   });
 
   return result;
+}; */
+
+const getWeekKeys = (now: Date, timeZone: string) => {
+  const start = startOfWeek(now, { weekStartsOn: 1 });
+
+  return Array.from({ length: 7 }).map((_, i) =>
+    formatInTimeZone(addDays(start, i), timeZone, "yyyy-MM-dd"),
+  );
 };
 
-const thisWeekTotal = async (userId: string) => {
+const getWeeklySessions = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { timeZone: true },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const now = new Date();
+
+  const weekKeys = getWeekKeys(now, user.timeZone || "UTC");
+
+  const result = await prisma.session.findMany({
+    where: {
+      userId,
+      dateKey: {
+        in: weekKeys,
+      },
+    },
+    select: {
+      id: true,
+      type: true,
+      dateKey: true,
+    },
+    orderBy: {
+      dateKey: "desc",
+    },
+  });
+
+  return result;
+};
+
+// time zone  issue
+/* const thisWeekTotal = async (userId: string) => {
   const now = new Date();
 
   const weeklySessionCount = await prisma.session.count({
@@ -201,9 +352,38 @@ const thisWeekTotal = async (userId: string) => {
   return {
     weeklySessionCount,
   };
+}; */
+
+const thisWeekTotal = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { timeZone: true },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const now = new Date();
+
+  const weekKeys = getWeekKeys(now, user.timeZone || "UTC");
+
+  const weeklySessionCount = await prisma.session.count({
+    where: {
+      userId,
+      dateKey: {
+        in: weekKeys,
+      },
+    },
+  });
+
+  return {
+    weeklySessionCount,
+  };
 };
 
-const getAnalyticStats = async (userId: string) => {
+// timezone issue
+/* const getAnalyticStats = async (userId: string) => {
   const userCount = await prisma.user.findUnique({
     where: {
       id: userId,
@@ -237,7 +417,7 @@ const getAnalyticStats = async (userId: string) => {
     monthlySessionCount,
     avgPerWeek,
   };
-};
+}; */
 
 /* const getMorningVsNight = async (userId: string) => {
   const userExists = await prisma.user.count({
@@ -278,6 +458,57 @@ const getAnalyticStats = async (userId: string) => {
     night: 100 - Number(((morningCount / totatCount) * 100).toFixed(2)),
   };
 }; */
+
+const getMonthKeys = (yearMonth: string) => {
+  const start = new Date(`${yearMonth}-01`);
+  const end = endOfMonth(start);
+
+  const keys: string[] = [];
+
+  const current = new Date(start);
+
+  while (current <= end) {
+    keys.push(format(current, "yyyy-MM-dd"));
+    current.setDate(current.getDate() + 1);
+  }
+
+  return keys;
+};
+
+const getAnalyticStats = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const now = new Date();
+
+  const monthKeys = getMonthKeys(format(now, "yyyy-MM"));
+
+  const monthlySessionCount = await prisma.session.count({
+    where: {
+      userId,
+      dateKey: {
+        in: monthKeys,
+      },
+    },
+  });
+
+  const elapsedDays = monthKeys.length;
+
+  const elapsedWeeks = elapsedDays / 7;
+
+  const avgPerWeek = Number((monthlySessionCount / elapsedWeeks).toFixed(2));
+
+  return {
+    monthlySessionCount,
+    avgPerWeek,
+  };
+};
 
 const getMorningVsNight = async (userId: string) => {
   const grouped = await prisma.session.groupBy({
@@ -323,7 +554,28 @@ const getMorningVsNight = async (userId: string) => {
   };
 };
 
+// fixed timezone issue
+
+const getPreviousDateKey = (dateKey: string) => {
+  const [year, month, day] = dateKey.split("-").map(Number);
+
+  const d = new Date(Date.UTC(year, month - 1, day));
+  d.setUTCDate(d.getUTCDate() - 1);
+
+  return d.toISOString().slice(0, 10);
+};
+
 const getCurrentStreak = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { timeZone: true },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  // Get last 365 days of session data grouped by day + type
   const grouped = await prisma.session.groupBy({
     by: ["dateKey", "type"],
     where: {
@@ -337,7 +589,7 @@ const getCurrentStreak = async (userId: string) => {
     },
   });
 
-  // Build day map
+  // Build map: dateKey -> { morning, night }
   const dayMap = new Map<string, { morning: boolean; night: boolean }>();
 
   for (const g of grouped) {
@@ -348,40 +600,39 @@ const getCurrentStreak = async (userId: string) => {
     const day = dayMap.get(g.dateKey)!;
 
     if (g.type === SessionType.MORNING) day.morning = true;
-    else if (g.type === SessionType.NIGHT) day.night = true;
+    if (g.type === SessionType.NIGHT) day.night = true;
   }
+
+  // TODAY (timezone-safe)
+  const todayKey = formatInTimeZone(
+    new Date(),
+    user.timeZone || "UTC",
+    "yyyy-MM-dd",
+  );
 
   let streak = 0;
+  let currentKey = todayKey;
 
-  const todayKey = format(new Date(), "yyyy-MM-dd");
-
-  //  Step 1: handle today separately
-  const today = dayMap.get(todayKey);
-
-  let currentDate: Date;
+  // Step 1: check today
+  const today = dayMap.get(currentKey);
 
   if (today && today.morning && today.night) {
-    // today is complete → include in streak
     streak = 1;
-    currentDate = subDays(new Date(), 1);
+    currentKey = getPreviousDateKey(currentKey);
   } else {
-    // today incomplete → ignore it
-    currentDate = subDays(new Date(), 1);
+    currentKey = getPreviousDateKey(currentKey);
   }
 
-  //  Step 2: strict check from yesterday backwards
+  // Step 2: walk backwards using ONLY dateKey
   for (let i = 0; i < 365; i++) {
-    const dateKey = format(currentDate, "yyyy-MM-dd");
-
-    const day = dayMap.get(dateKey);
+    const day = dayMap.get(currentKey);
 
     if (!day || !day.morning || !day.night) {
       break;
     }
 
     streak++;
-
-    currentDate.setDate(currentDate.getDate() - 1);
+    currentKey = getPreviousDateKey(currentKey);
   }
 
   return {
@@ -401,8 +652,6 @@ const getStarCount = async (userId: string) => {
   });
 
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-
-  console.log(user);
 
   return {
     starEarned: user.starEarned,

@@ -5,7 +5,7 @@ Authorization: {{jabir}}
 Content-Type: application/json
 
 {
-  "type": "NIGHT"
+  "type": "MORNING"
 }
 
 
