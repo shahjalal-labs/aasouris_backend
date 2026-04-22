@@ -1,6 +1,6 @@
 ### send test notification
 
-POST {{port6012}}/notify/send-test HTTP/1.1
+POST {{baseUrl}}/notify/send-test HTTP/1.1
 Content-Type: application/json
 
 {
@@ -16,8 +16,7 @@ Content-Type: application/json
     "messagePreview": "meta message preview"
   },
   "notificationChannel": "BOTH",
-  "receiverId": "69b39c437fcfe6424bad761e",
-  "senderId": "69b28477dd104bd62ad45b4b",
+  "receiverId": "69e1d3c12a1df27aa876881e",
   "title": "Send test notification",
   "type": "SYSTEM"
 }
@@ -27,26 +26,26 @@ Content-Type: application/json
 
 # / isRead=> true, false, all
 
-GET {{port6012}}/notify/my?page=1&limit=20&isRead=all HTTP/1.1
-Authorization: {{seller}}
+GET {{baseUrl}}/notify/my?page=1&limit=20&isRead=all HTTP/1.1
+Authorization: {{jabir}}
 
 
 ### get single notification and marks as read
 
-GET {{port6012}}/notify/single/019c7952-83f2-7b31-94e5-497c2b2ec6ba HTTP/1.1
-Authorization: {{client}}
+GET {{baseUrl}}/notify/single/69e89b5b7fa4add0f8c09f67 HTTP/1.1
+Authorization: {{jabir}}
 
 
 ### get notification unread count
 
-GET {{port6012}}/notify/unread-count HTTP/1.1
-Authorization: {{seller}}
+GET {{baseUrl}}/notify/unread-count HTTP/1.1
+Authorization: {{jabir}}
 
 
 ### mark all as read or unread
 
-PATCH {{port6012}}/notify/mark-all HTTP/1.1
-Authorization: {{client}}
+PATCH {{baseUrl}}/notify/mark-all HTTP/1.1
+Authorization: {{jabir}}
 Content-Type: application/json
 
 {
