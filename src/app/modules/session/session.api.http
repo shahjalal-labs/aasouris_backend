@@ -51,4 +51,19 @@ GET {{baseUrl}}/session/star-count HTTP/1.1
 Authorization: {{jabir}}
 
 
-### level
+### get streak over time
+
+GET {{baseUrl}}/session/streak-over-time HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get monthly performance
+
+GET {{baseUrl}}/session/monthly HTTP/1.1
+Authorization: {{jabir}}
+
+
+### get insights
+
+GET {{baseUrl}}/session/insights HTTP/1.1
+Authorization: {{jabir}}

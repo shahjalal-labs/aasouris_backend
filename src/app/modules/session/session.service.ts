@@ -1,24 +1,19 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiErrors";
-import { logger } from "../../../shared/logger";
 import prisma from "../../../shared/prisma";
 import { TCreateSession } from "./session.validation";
 import {
   addDays,
-  differenceInDays,
-  endOfDay,
   endOfMonth,
   endOfWeek,
   endOfYear,
   format,
-  startOfDay,
-  startOfMonth,
   startOfWeek,
-  startOfYear,
   subDays,
+  subWeeks,
 } from "date-fns";
 
-import { formatInTimeZone } from "date-fns-tz";
+import { formatInTimeZone, toDate } from "date-fns-tz";
 
 import { paginationHelper, TOptions } from "../../../shared/paginationHelper";
 import { Prisma, SessionType } from "@prisma/client";
@@ -658,6 +653,212 @@ const getStarCount = async (userId: string) => {
   };
 };
 
+const getWeekDateKeys = (weekStart: Date, timeZone: string): string[] => {
+  return Array.from({ length: 7 }).map((_, i) =>
+    formatInTimeZone(addDays(weekStart, i), timeZone, "yyyy-MM-dd"),
+  );
+};
+
+const getStreakOverTime = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { timeZone: true },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const timeZone = user.timeZone || "UTC";
+  const now = new Date();
+  const currentWeekStart = startOfWeek(now, { weekStartsOn: 1 });
+
+  // Generate weeks from current (0 weeks back) to 4 weeks back
+  const weekStarts: Date[] = [];
+  for (let i = 0; i < 5; i++) {
+    weekStarts.push(subWeeks(currentWeekStart, i)); // i=0 ➜ current, i=4 ➜ oldest
+  }
+
+  const results = await Promise.all(
+    weekStarts.map(async (weekStart, index) => {
+      const dateKeys = getWeekDateKeys(weekStart, timeZone);
+
+      const count = await prisma.session.count({
+        where: {
+          userId,
+          dateKey: { in: dateKeys },
+        },
+      });
+
+      return {
+        week: `Week ${index + 1}`, // Week 1 = current, Week 5 = oldest
+        count,
+      };
+    }),
+  );
+
+  return results;
+};
+
+const getCurrentYearMonthlyCounts = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { timeZone: true },
+  });
+
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+  const timeZone = user.timeZone || "UTC";
+
+  // Determine the user's current year
+  const nowInUserTz = toDate(
+    formatInTimeZone(new Date(), timeZone, "yyyy-MM-dd'T'HH:mm:ss"),
+  );
+  const userYear = parseInt(format(nowInUserTz, "yyyy"), 10); // e.g. 2026
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // Build promises for each month
+  const counts = await Promise.all(
+    monthNames.map(async (monthLabel, index) => {
+      const monthNumber = (index + 1).toString().padStart(2, "0"); // "01" to "12"
+      const yearMonth = `${userYear}-${monthNumber}`; // "2026-01"
+
+      const count = await prisma.session.count({
+        where: {
+          userId,
+          dateKey: { startsWith: yearMonth }, // matches all days of the month
+        },
+      });
+
+      return { month: monthLabel, count };
+    }),
+  );
+
+  return counts;
+};
+
+const getInsights = async (userId: string) => {
+  // 1. Fetch user timezone
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { timeZone: true },
+  });
+
+  if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+  const timeZone = user.timeZone || "UTC";
+
+  // 2. Generate dateKeys for the last 30 days (including today)
+  const today = new Date();
+  const dateKeys = Array.from({ length: 30 }, (_, i) => {
+    const date = subDays(today, i); // i=0 → today, i=29 → 29 days ago
+    return formatInTimeZone(date, timeZone, "yyyy-MM-dd");
+  });
+
+  // 3. Fetch all sessions within that period
+  const sessions = await prisma.session.findMany({
+    where: {
+      userId,
+      dateKey: { in: dateKeys },
+    },
+    select: { id: true, type: true, dateKey: true },
+  });
+
+  // 4. Count morning vs night
+  let morningCount = 0;
+  let nightCount = 0;
+
+  for (const s of sessions) {
+    if (s.type === "MORNING") morningCount++;
+    else if (s.type === "NIGHT") nightCount++;
+  }
+
+  // consistency: morning wins on tie
+  const consistency = morningCount >= nightCount ? "morning" : "night";
+
+  // 5. Best day calculation
+  const dayNames = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  // Map a dateKey to a 0‑based index (Monday = 0, …, Sunday = 6)
+  const toDayIndex = (dateKey: string): number => {
+    const d = new Date(dateKey + "T00:00:00Z"); // treat as UTC
+    return (d.getUTCDay() + 6) % 7; // Sunday(0) -> 6, Monday(1) -> 0
+  };
+
+  const sessionCountByDay = new Array(7).fill(0);
+  const dayOccurrences = new Array(7).fill(0);
+
+  // Count how many times each weekday appears in the 30‑day window
+  for (const dk of dateKeys) {
+    const idx = toDayIndex(dk);
+    dayOccurrences[idx]++;
+  }
+
+  // Sum session counts per weekday
+  for (const s of sessions) {
+    const idx = toDayIndex(s.dateKey);
+    sessionCountByDay[idx]++;
+  }
+
+  // Find the day with the highest average sessions per occurrence
+  let bestDayIdx = 0;
+  let maxAvg = -1;
+
+  for (let i = 0; i < 7; i++) {
+    const occ = dayOccurrences[i];
+    if (occ === 0) continue;
+    const avg = sessionCountByDay[i] / occ;
+    if (avg > maxAvg) {
+      maxAvg = avg;
+      bestDayIdx = i;
+    }
+    // when avg is equal, we keep the earlier day (Monday first)
+  }
+
+  const bestDay = dayNames[bestDayIdx];
+
+  return {
+    consistency,
+    bestDay,
+    // optional statistics for debugging or richer UI
+    /* stats: {
+      morningCount,
+      nightCount,
+      dailyAverages: dayNames.map((name, idx) => ({
+        day: name,
+        average:
+          dayOccurrences[idx] > 0
+            ? parseFloat(
+                (sessionCountByDay[idx] / dayOccurrences[idx]).toFixed(2),
+              )
+            : 0,
+      })),
+    }, */
+  };
+};
+
 export const sessionService = {
   createSession,
   getAllSessions,
@@ -667,4 +868,7 @@ export const sessionService = {
   getMorningVsNight,
   getCurrentStreak,
   getStarCount,
+  getStreakOverTime,
+  getCurrentYearMonthlyCounts,
+  getInsights,
 };

@@ -28,4 +28,10 @@ router.get("/current-streak", sessionController.getCurrentStreak);
 
 router.get("/star-count", sessionController.getStarCount);
 
+router.get("/streak-over-time", sessionController.getStreakOverTime);
+
+router.get("/monthly", sessionController.getCurrentYearMonthlyCounts);
+
+router.get("/insights", sessionController.getInsights);
+
 export const sessionRoutes = router;

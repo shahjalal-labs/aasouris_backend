@@ -116,6 +116,42 @@ const getStarCount = catchAsync(async (req, res) => {
   });
 });
 
+const getStreakOverTime = catchAsync(async (req, res) => {
+  const { id: userId } = req.user;
+  const result = await sessionService.getStreakOverTime(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Streak over time retrieved successfully",
+    data: result,
+  });
+});
+
+const getCurrentYearMonthlyCounts = catchAsync(async (req, res) => {
+  const { id: userId } = req.user;
+  const result = await sessionService.getCurrentYearMonthlyCounts(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Monthly counts for current year retrieved successfully",
+    data: result,
+  });
+});
+
+const getInsights = catchAsync(async (req, res) => {
+  const { id: userId } = req.user;
+  const result = await sessionService.getInsights(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Insights retrieved successfully",
+    data: result,
+  });
+});
+
 export const sessionController = {
   createSession,
   getAllSessions,
@@ -125,4 +161,7 @@ export const sessionController = {
   getMorningVsNight,
   getCurrentStreak,
   getStarCount,
+  getStreakOverTime,
+  getCurrentYearMonthlyCounts,
+  getInsights,
 };
