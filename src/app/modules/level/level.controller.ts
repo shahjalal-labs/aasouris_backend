@@ -24,13 +24,14 @@ const getCurrentLevel = catchAsync(async (req, res) => {
   });
 });
 
-const getBadge = catchAsync(async (req, res) => {
+const getBadges = catchAsync(async (req, res) => {
   const { id: userId } = req.user;
-  const result = await levelService.getBadge(userId);
+  const result = await levelService.getBadges(userId);
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Badge retrieved successfully",
+    message: "Badges retrieved successfully",
     data: result,
   });
 });
@@ -38,5 +39,5 @@ const getBadge = catchAsync(async (req, res) => {
 export const levelController = {
   getAllLevels,
   getCurrentLevel,
-  getBadge,
+  getBadges,
 };

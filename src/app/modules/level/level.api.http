@@ -10,7 +10,7 @@ GET {{baseUrl}}/level/current-level HTTP/1.1
 Authorization: {{jabir}}
 
 
-### get badge
+### get badges
 
-GET {{baseUrl}}/level/badge HTTP/1.1
+GET {{baseUrl}}/level/badges HTTP/1.1
 Authorization: {{jabir}}
