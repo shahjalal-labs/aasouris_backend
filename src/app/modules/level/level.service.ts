@@ -70,16 +70,17 @@ const getCurrentLevel = async (userId: string) => {
 
       nextLevel: nextLevel
         ? {
-            id: nextLevel.id,
-            name: nextLevel.title,
-            requiredStars: nextLevel.requiredStars,
-            order: nextLevel.order,
-          }
+          id: nextLevel.id,
+          name: nextLevel.title,
+          requiredStars: nextLevel.requiredStars,
+          order: nextLevel.order,
+        }
         : null,
     };
   });
 };
 
+// Helper: check if a session was created within 30 min of its reminder time
 const isWithin30Min = (
   sessionCreatedAt: Date,
   reminderTime: string, // "HH:mm"
@@ -93,32 +94,49 @@ const isWithin30Min = (
 };
 
 const getBadges = async (userId: string) => {
+  // 1. Fetch user data
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
       timeZone: true,
       morningReminder: true,
       nightReminder: true,
+      starEarned: true,
     },
   });
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   const tz = user.timeZone || "UTC";
 
-  // 1. Current streak (reuse existing service method)
+  // 2. Current streak (reuse existing service logic)
   const { currentStreak } = await sessionService.getCurrentStreak(userId);
 
-  // 2. First Brush – any session exists
-  const totalSessions = await prisma.session.count({ where: { userId } });
-  const firstBrush = totalSessions > 0;
+  // 3. Basic session counts
+  const [totalSessions, morningCount, nightCount] = await Promise.all([
+    prisma.session.count({ where: { userId } }),
+    prisma.session.count({ where: { userId, type: "MORNING" } }),
+    prisma.session.count({ where: { userId, type: "NIGHT" } }),
+  ]);
 
-  // 3. On Time – check up to last 100 sessions (reasonable limit)
+  // 4. Bronze badges
+  const firstBrush = totalSessions > 0;
+  const threeDayStreak = currentStreak >= 3;
+
+  // Cavity Fighter – at least one day with both morning & night sessions
+  const dualDays = await prisma.session.groupBy({
+    by: ["dateKey"],
+    where: { userId },
+    _count: { type: true },
+    having: { type: { _count: { gte: 2 } } },
+  });
+  const cavityFighter = dualDays.length > 0;
+
+  // On Time – any session within 30 min of its reminder
   const recentSessions = await prisma.session.findMany({
     where: { userId },
     select: { type: true, createdAt: true },
     orderBy: { createdAt: "desc" },
     take: 100,
   });
-
   let onTime = false;
   for (const s of recentSessions) {
     if (s.type === "MORNING" && user.morningReminder) {
@@ -135,28 +153,58 @@ const getBadges = async (userId: string) => {
     }
   }
 
-  // 4. Morning Hero & Night Champion (≥ 7 sessions of that type)
-  const [morningCount, nightCount] = await Promise.all([
-    prisma.session.count({ where: { userId, type: "MORNING" } }),
-    prisma.session.count({ where: { userId, type: "NIGHT" } }),
-  ]);
-
+  // 5. Silver badges
+  const sevenDayStreak = currentStreak >= 7;
   const morningHero = morningCount >= 7;
   const nightChampion = nightCount >= 7;
+  const perfectWeek = currentStreak >= 7; // same as 7-day streak per your instruction
 
-  // 5. Perfect Week – current streak ≥ 7 days
-  const perfectWeek = currentStreak >= 7;
+  // 6. Gold badges
+  const thirtyDayStreak = currentStreak >= 30;
+  const masterBrusher = totalSessions >= 30;
+  const legend = totalSessions >= 100;
+  const superStar = (user.starEarned ?? 0) >= 500;
+
+  // 7. Compose the response object
+  const bronzeBadges = [
+    { name: "First Brush", unlocked: firstBrush },
+    { name: "3-Day Streak", unlocked: threeDayStreak },
+    { name: "Cavity Fighter", unlocked: cavityFighter },
+    { name: "On Time", unlocked: onTime },
+  ];
+
+  const silverBadges = [
+    { name: "7-Day Streak", unlocked: sevenDayStreak },
+    { name: "Morning Hero", unlocked: morningHero },
+    { name: "Night Champion", unlocked: nightChampion },
+    { name: "Perfect Week", unlocked: perfectWeek },
+  ];
+
+  const goldBadges = [
+    { name: "30-Day Streak", unlocked: thirtyDayStreak },
+    { name: "Master Brusher", unlocked: masterBrusher },
+    { name: "Legend", unlocked: legend },
+    { name: "Super Star", unlocked: superStar },
+  ];
+
+  // 8. Determine reward_badge (highest tier fully unlocked)
+  const isGoldComplete = goldBadges.every((b) => b.unlocked);
+  const isSilverComplete = silverBadges.every((b) => b.unlocked);
+  const isBronzeComplete = bronzeBadges.every((b) => b.unlocked);
+
+  let earnedBadge: "gold" | "silver" | "bronze" | null = null;
+  if (isGoldComplete) earnedBadge = "gold";
+  else if (isSilverComplete) earnedBadge = "silver";
+  else if (isBronzeComplete) earnedBadge = "bronze";
+  else earnedBadge = null;
 
   return {
-    first_brush: firstBrush,
-    current_streak: currentStreak,
-    on_time: onTime,
-    morning_hero: morningHero,
-    night_champion: nightChampion,
-    perfect_week: perfectWeek,
+    bronze: bronzeBadges,
+    silver: silverBadges,
+    gold: goldBadges,
+    earnedBadge,
   };
 };
-
 export const levelService = {
   getAllLevels,
   getCurrentLevel,
