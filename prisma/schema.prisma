@@ -91,6 +91,9 @@ enum NotificationChannel {
 
 enum NotificationType {
   SYSTEM
+  MORNING_REMINDER
+  NIGHT_REMINDER
+  POINT // points added
 }
 
 model Session {
