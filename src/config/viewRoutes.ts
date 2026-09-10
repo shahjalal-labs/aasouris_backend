@@ -267,6 +267,154 @@ const smilelySupport = () => {
   `;
 };
 
+const smilelyMarketing = () => {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smilely — Build Better Brushing Habits</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f7f8fb;
+    margin: 0;
+    padding: 32px;
+    color: #0f172a;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  }
+  .hero {
+    text-align: center;
+    padding: 20px 0 30px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  h1 { font-size: 30px; color: #2563eb; margin: 0 0 10px; }
+  .tagline { font-size: 18px; color: #475569; font-weight: 500; margin: 0; }
+  h2 { font-size: 20px; margin: 32px 0 14px; color: #1e293b; }
+  p, li { font-size: 15px; color: #334155; }
+  ul { padding-left: 24px; margin-bottom: 20px; }
+  li { margin-bottom: 10px; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .feature-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .feature-card h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    color: #2563eb;
+  }
+  .feature-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #475569;
+  }
+  .cta-box {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 36px;
+  }
+  .cta-box h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #1e40af;
+  }
+  .cta-box p {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: #3b82f6;
+  }
+  .btn {
+    display: inline-block;
+    background-color: #2563eb;
+    color: #ffffff !important;
+    padding: 10px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  .btn:hover {
+    background-color: #1d4ed8;
+  }
+  a { color: #2563eb; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .footer { text-align: center; margin-top: 40px; font-size: 13px; color: #6b7280; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>Smilely</h1>
+    <p class="tagline">Build Healthy Habits, One Smile at a Time</p>
+  </div>
+
+  <h2>About Smilely</h2>
+  <p>Smilely is your personal oral health and daily brushing companion. Designed for everyday consistency, Smilely turns dental care into an engaging, rewarding routine that keeps your teeth clean, prevents dental problems, and helps you achieve a brighter smile.</p>
+
+  <h2>Key Features</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <h3>Smart Brushing Sessions</h3>
+      <p>Guided 2-minute brushing timer with gentle reminders to clean each quadrant evenly.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Daily Streaks &amp; Milestones</h3>
+      <p>Build momentum by maintaining daily morning and evening brushing streaks.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Points &amp; Badges</h3>
+      <p>Earn reward points and unlock achievement badges as you hit your oral hygiene goals.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Smart Reminders</h3>
+      <p>Customizable morning and bedtime notifications tailored to your routine so you never miss a brush.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Progress Analytics</h3>
+      <p>Track your completion history, consistency rate, and oral health habits over time.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Cloud Sync</h3>
+      <p>Sign in with Apple or Google to keep your brushing streak and progress synchronized safely.</p>
+    </div>
+  </div>
+
+  <h2>Why Oral Health Matters</h2>
+  <p>Consistent, thorough brushing is the cornerstone of dental hygiene. Smilely helps individuals and families build lasting oral care habits that prevent cavities, gum disease, and long-term dental complications.</p>
+
+  <div class="cta-box">
+    <h3>Ready to transform your daily routine?</h3>
+    <p>Download Smilely today and start your journey towards healthier brushing habits.</p>
+    <a class="btn" href="mailto:support@smilelyapp.com">Contact Us</a>
+  </div>
+
+  <div class="footer">&copy; 2026 Smilely Inc. All rights reserved.</div>
+</div>
+</body>
+</html>
+  `;
+};
+
 const tapinTermsOfService = () => {
   return `
   <!doctype html>
@@ -805,6 +953,10 @@ configRoutes.get("/privacy-policy", (_req, res) => {
 
 configRoutes.get("/support", (_req, res) => {
   res.type("html").send(smilelySupport());
+});
+
+configRoutes.get("/marketing", (_req, res) => {
+  res.type("html").send(smilelyMarketing());
 });
 
 configRoutes.get("/terms-condition", (_req, res) => {
