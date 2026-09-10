@@ -48,6 +48,7 @@ app.use("/api/v1", router);
 
 //privacy policy, terms of service etc route
 app.use("/", configRoutes);
+app.use("/api/v1", configRoutes);
 
 app.use(
   "/bull",

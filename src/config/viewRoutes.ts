@@ -68,303 +68,203 @@ const stripeOnboardingSuccess = () => {
  `;
 };
 
-const tapinPrivacyPolicy = () => {
-  return `
-  <!doctype html>
+const smilelyPrivacyPolicy = () => {
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Tapin — Privacy Policy</title>
-<meta name="description" content="Full Privacy Policy for Tapin mobile application"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smilely — Privacy Policy</title>
 <style>
-:root{
---bg:#f7f8fb;
---card:#ffffff;
---text:#0f172a;
---muted:#6b7280;
---accent:#2563eb;
-font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-}
-body{margin:0;background:var(--bg);padding:32px;color:var(--text);}
-.wrap{max-width:1000px;margin:0 auto;}
-.card{background:var(--card);border-radius:12px;padding:28px;
-box-shadow:0 6px 18px rgba(0,0,0,0.05);margin-bottom:20px;}
-h1{font-size:24px;margin:0 0 8px;color:var(--accent);}
-h2{font-size:18px;margin-top:32px;margin-bottom:12px;}
-h3{font-size:16px;margin-top:24px;margin-bottom:8px;}
-p,li{font-size:15px;line-height:1.7;}
-ul{margin-left:22px;margin-bottom:16px;}
-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px;}
-th,td{border:1px solid #e5e7eb;padding:10px 12px;text-align:left;vertical-align:top;}
-th{background:#f1f5f9;font-weight:600;}
-.muted{color:var(--muted);}
-footer{text-align:center;margin-top:40px;font-size:13px;color:var(--muted);}
-strong{font-weight:600;}
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f7f8fb;
+    margin: 0;
+    padding: 32px;
+    color: #0f172a;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  }
+  h1 { font-size: 26px; color: #2563eb; margin-bottom: 8px; }
+  .last-updated { font-size: 14px; color: #64748b; margin-bottom: 24px; font-weight: 500; }
+  h2 { font-size: 19px; margin: 28px 0 12px; color: #1e293b; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 20px 0 8px; color: #334155; }
+  p, li { font-size: 15px; color: #334155; }
+  ul { padding-left: 24px; margin-bottom: 16px; }
+  li { margin-bottom: 6px; }
+  .contact-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 12px;
+  }
+  .contact-box p { margin: 6px 0; }
+  a { color: #2563eb; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .footer { text-align: center; margin-top: 40px; font-size: 13px; color: #6b7280; }
 </style>
 </head>
 <body>
 <div class="wrap">
-<header class="card">
-<h1>Tapin Privacy Policy</h1>
-<p class="muted"><strong>Version:</strong> 1.0</p>
-<p class="muted"><strong>Last Updated:</strong> March 2, 2026</p>
-<p class="muted"><strong>Effective Date:</strong> March 2, 2026</p>
-</header>
+  <h1>Smilely Privacy Policy</h1>
+  <div class="last-updated">Last Updated: September 10, 2026</div>
 
-<section class="card">
+  <p>Smilely (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) respects your privacy. This Privacy Policy explains how information is collected, used, and protected when you use the Smilely application.</p>
 
-<h2>1. INTRODUCTION</h2>
-<p>Welcome to Tapin ("we," "our," or "us"), where you can discover and join real-world activities and events happening around you. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application, website, and services that connect people to discover, share, and participate in local activities and events. Undefined terms in this Privacy Policy will have the same definition as in our Terms of Service.</p>
+  <h2>1. Information We Collect</h2>
+  <p>Depending on how you use Smilely, we may collect information such as:</p>
+  <ul>
+    <li>Email address and account information</li>
+    <li>Information associated with Apple or Google sign-in, when you choose those login methods</li>
+    <li>Brushing goals and completed brushing sessions</li>
+    <li>Streaks, points, achievements, and progress information</li>
+    <li>Notification/reminder preferences</li>
+  </ul>
 
-<h2>2. INFORMATION WE COLLECT</h2>
-<p>Some of the information we collect is necessary for you to create and maintain a Tapin account, and some voluntary. However, if you don't provide necessary information when requested, then we may not be able to provide you with access to the App or fulfill our obligations to you (such as providing services you request).</p>
+  <h2>2. How We Use Information</h2>
+  <p>We use information to:</p>
+  <ul>
+    <li>Provide and maintain the Smilely service</li>
+    <li>Manage your account</li>
+    <li>Track your brushing goals and progress</li>
+    <li>Calculate streaks, points, and achievements</li>
+    <li>Provide reminders and notifications</li>
+    <li>Provide customer support</li>
+    <li>Improve the application</li>
+  </ul>
 
-<h3>Information You Provide</h3>
-<ul>
-<li>Contact information (e.g., name, email, phone number)</li>
-<li>Profile details (e.g., age, gender, interests, bio)</li>
-<li>Content you submit (e.g., messages, activities you create or join)</li>
-<li>Images and photos you share in chat or on your profile</li>
-<li>Profile picture(s) for verification purposes (to confirm you are real)</li>
-<li>Referral information (e.g., how you heard about Tapin)</li>
-<li>Location information you voluntarily share with other users (e.g., pin drops in chat)</li>
-</ul>
+  <h2>3. Notifications</h2>
+  <p>Smilely may send notifications to remind you about your brushing goals. You can enable or disable notifications through your device settings and the app&apos;s available settings.</p>
 
-<h3>Information We Collect Automatically</h3>
-<ul>
-<li><strong>Location Information:</strong> We collect location information through your device to show you nearby activities and events. You can limit this collection via your device controls.</li>
-<li><strong>App Usage:</strong> We collect information about when and how you use Tapin, including what activities you view, which events you join, and how you interact with the community.</li>
-<li><strong>Log Data and Device Information:</strong> We automatically collect certain technical information when you use Tapin to ensure proper functionality and improve performance. This may include your device model, operating system version, app version, language, time zone, IP address, and diagnostic data related to log-ins, crashes, or errors.</li>
-</ul>
+  <h2>4. Data Security</h2>
+  <p>We take reasonable measures to protect information associated with your account. Passwords should never be stored in plain text and should be securely handled by our authentication system.</p>
 
-<h3>Profile Picture Verification</h3>
-<p>When you create or update your Tapin profile, you may be asked to submit a profile picture for verification purposes. This verification helps confirm that your profile represents a real person and maintains the integrity of our community. Verification images are processed using AI-powered tools and may be compared with your primary profile picture. After verification is complete, verification images are retained only as long as necessary for safety and fraud prevention purposes, or as required by applicable law.</p>
+  <h2>5. Third-Party Services</h2>
+  <p>Smilely may use third-party services for authentication, cloud storage, analytics, notifications, or other functionality. Where applicable, information may be processed by those services according to their respective privacy policies.</p>
 
-<h3>Image Analysis</h3>
-<p>All photos and images you upload—including profile pictures and images shared in chats or activities—are automatically analyzed using AI-powered tools to detect explicit, violent, or otherwise prohibited content. This helps maintain a safe community and uphold our Community Guidelines. In some cases, flagged images may be reviewed by trained human moderators under confidentiality obligations. We do not use these images to train external or internal AI models, and analysis is limited to safety and policy-enforcement purposes.</p>
+  <h2>6. Data Retention</h2>
+  <p>We retain information for as long as necessary to provide the service or as required for legitimate business or legal purposes.</p>
 
-<h2>3. HOW WE USE YOUR INFORMATION</h2>
-<p>We use the personal information we collect mainly to provide Tapin to you and to improve it. Specifically, we may use the data we collect to:</p>
-<ul>
-<li>Provide the Products you requested, including discovery of nearby activities and events</li>
-<li>Register your account and verify your identity</li>
-<li>Develop, operate, improve, maintain, and protect Tapin</li>
-<li>Manage and administer your subscription (if you have one)</li>
-<li>Personalize Tapin, including to show nearby activities, nearby users with shared interests, and activity recommendations</li>
-<li>Verify and enhance the safety and security of Tapin</li>
-<li>Verify and analyze user engagement, trends, and usage</li>
-<li>Handle and record user rights requests, including opt-ins and opt-outs</li>
-<li>Prevent fraud or other unauthorized or illegal activity</li>
-<li>Enforce, investigate, and report conduct violating our Terms of Service, Community Guidelines, or other policies</li>
-<li>Respond to requests from law enforcement agencies or other government agencies, and comply with legal or regulatory requirements</li>
-<li>Provide aggregated engagement analytics without sharing personal or identifiable user information</li>
-</ul>
+  <h2>7. Account Deletion</h2>
+  <p>Users can request or initiate deletion of their Smilely account where the functionality is provided within the application. Account deletion will remove associated account data according to our data retention practices.</p>
 
-<h3>Location Data</h3>
-<p>We collect your location to:</p>
-<ul>
-<li>Show you nearby activities and events relevant to your area</li>
-<li>Calculate your distance from other users for the "People Here" list</li>
-<li>Generate personalized recommendations</li>
-<li>Enable the core discovery functionality of Tapin</li>
-</ul>
-<p>Your precise location is stored on our servers. When other users view the "People Here" list, they can see your distance from them (not your exact coordinates). When you choose to share your location with other users directly (e.g., by dropping a pin in chat when meeting up), that sharing is entirely voluntary and at your discretion.</p>
-<p>You can disable location services for Tapin at any time through your device settings, though this may limit your ability to discover nearby activities and appear in the "People Here" list. You can also enable "Snooze Mode" to hide yourself from discovery features.</p>
+  <h2>8. Children&apos;s Privacy</h2>
+  <p>Smilely is not intended to knowingly collect personal information from children in violation of applicable privacy laws. If you believe a child has provided personal information improperly, please contact us.</p>
 
-<h3>Legal Bases</h3>
-<p>The table below sets out a description of all the ways we use your personal data, and which of the justifications we rely on to do so. We have also identified what our legitimate interests are where we rely on that justification for processing.</p>
+  <h2>9. Changes to This Privacy Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date.</p>
 
-<table>
-<thead>
-<tr>
-<th>Purpose</th>
-<th>Legal Bases</th>
-<th>Data Categories Used</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Create and maintain your account and enable account login/authentication</td>
-<td>Contractual Necessity</td>
-<td>Contact info; profile details; profile photos; verification images; device/log data</td>
-</tr>
-<tr>
-<td>Verify your identity and authenticity</td>
-<td>Contractual necessity; legitimate interests (platform safety)</td>
-<td>Verification images; profile details; AI comparison data</td>
-</tr>
-<tr>
-<td>Enable chat, groups, and activity participation</td>
-<td>Contractual Necessity</td>
-<td>Profile info; messages; group membership; device/log data</td>
-</tr>
-<tr>
-<td>Display nearby users and activities</td>
-<td>Consent (for location); legitimate interests (to provide core functionality)</td>
-<td>Location grid data; profile info; activity participation</td>
-</tr>
-<tr>
-<td>Personalize suggestions and activity recommendations</td>
-<td>Legitimate interests (service improvement)</td>
-<td>Location; interests; app usage data</td>
-</tr>
-<tr>
-<td>Process subscriptions and payments</td>
-<td>Contractual necessity; legal obligation (tax/audit)</td>
-<td>Transaction identifiers; subscription status; email</td>
-</tr>
-<tr>
-<td>Improve, troubleshoot, and secure the app</td>
-<td>Legitimate interests</td>
-<td>Analytics data; log data; crash reports</td>
-</tr>
-<tr>
-<td>Investigate and act on policy violations or legal requests</td>
-<td>Legal obligation; legitimate interests (platform safety)</td>
-<td>Any relevant account, content, or log data</td>
-</tr>
-</tbody>
-</table>
+  <h2>10. Contact Us</h2>
+  <p>If you have questions about this Privacy Policy, please contact:</p>
+  <div class="contact-box">
+    <p><strong>Smilely Inc.</strong></p>
+    <p>Email: <a href="mailto:support@smilelyapp.com">support@smilelyapp.com</a></p>
+    <p>Website: <a href="https://smilelyapp.com" target="_blank" rel="noopener noreferrer">https://smilelyapp.com</a></p>
+  </div>
 
-<h3>Automated Decision-Making</h3>
-<p>Tapin does not make decisions with significant legal or similar effects based solely on automated processing. AI-based systems are used only to assist with moderation, recommendations, and safety features, under human oversight.</p>
-
-<h2>4. HOW WE SHARE INFORMATION</h2>
-<p>We may share Personal Information we collect about you:</p>
-<ul>
-<li>With other Tapin users, according to your account preferences and consistent with our Terms of Service and Community Guidelines</li>
-<li>With service providers who help us operate Tapin (for example, for hosting, analytics, messaging, or customer support). These providers only access the information necessary to perform their services and are bound by confidentiality and data protection obligations</li>
-<li>For legal, safety, and protection purposes, including to comply with law enforcement requests, subpoenas, or court orders, or to protect the rights, property, and safety of Tapin, our users, or the public</li>
-<li>To enforce our rights, including investigating or preventing potential violations of our Terms of Service, Community Guidelines, or applicable law</li>
-<li>In connection with a corporate transaction, such as a merger, acquisition, financing, or sale of assets. In such cases, any successor entity will be required to treat your information in a manner consistent with this Privacy Policy</li>
-</ul>
-<p>We do not sell your personal information and we do not share your personal information with third parties for cross-context behavioral advertising.</p>
-
-<h3>Other Users and "People Here" List</h3>
-<p>When you are in a given area, your public profile (including name, profile photo, age, and interests) may appear in the "People Here" list visible to other users in that area. When another user clicks on the "People Here" list, they can see your name and your distance from them. Your exact location is never shown to other users; instead, we show only the distance between you and them.</p>
-<p>When you join an activity or event, your public profile may also be visible to other participants. You can disable visibility of your profile in certain activities through your privacy settings.</p>
-<p>Users can enable "Snooze Mode" at any time to hide themselves from the "People Here" list, activity discovery, and the community map.</p>
-
-<h3>Third-Party Service Providers</h3>
-<p>We use third-party providers to enable essential app functions, such as analytics and messaging. Service Providers will have access to your Personal Information needed to perform their business functions, but may not use or share that Personal Information for purposes outside the scope of their functions related to Tapin:</p>
-<ul>
-<li>Cloud hosting and backend services (Firebase, AWS, or similar)</li>
-<li>Chat and messaging functionality (Stream Chat or similar)</li>
-<li>Analytics and crash reporting</li>
-<li>Payment processing (Apple, Google, or Stripe)</li>
-<li>AI-powered image moderation</li>
-<li>Independent Moderators and Reviewers – In limited cases, we may engage independent contractors to assist with human review for content moderation. These contractors are bound by confidentiality agreements and data protection obligations and are only permitted to access the minimum information necessary to perform their assigned tasks</li>
-</ul>
-
-<h3>Legal Compliance</h3>
-<p>We may share your information when required by law, including in response to:</p>
-<ul>
-<li>Law enforcement requests, subpoenas, or court orders</li>
-<li>Legal obligations related to fraud prevention, financial regulations, or national security</li>
-<li>Compliance with applicable data protection laws, including GDPR and CCPA/CPRA</li>
-</ul>
-
-<h3>Security &amp; Protection</h3>
-<p>We may also process or share your information when necessary to:</p>
-<ul>
-<li>Detect, investigate, and prevent fraudulent activities, unauthorized access, or security threats</li>
-<li>Enforce our Terms of Service and protect the rights, safety, and property of Tapin, our users, or the public</li>
-<li>Respond to reports of inappropriate content or violations of our community guidelines</li>
-</ul>
-
-<h2>5. THIRD-PARTY SERVICES</h2>
-<p>Parts of Tapin may link to or integrate with third-party services. Tapin does not own or control these third parties, and this Privacy Policy does not apply to their data practices. When you interact with these services or choose to link your Tapin account (for example, with a social network), you are providing your information directly to that third party. Please review their privacy policies before sharing any information.</p>
-
-<h2>6. DATA SECURITY</h2>
-<p>While no organization can guarantee perfect security, we are continuously implementing and updating administrative, technical, and physical security measures to help protect your information against unlawful or unauthorized access, loss, destruction, or alteration.</p>
-<p>Access to personal data is restricted to authorized personnel and service providers under strict contractual and technical safeguards, and data is encrypted in transit and at rest where applicable.</p>
-
-<h2>7. YOUR PRIVACY RIGHTS AND CHOICES</h2>
-<p>You can control your experience on Tapin via the settings in the app, including by:</p>
-<ul>
-<li>Updating your contact information</li>
-<li>Unsubscribing from marketing emails</li>
-<li>Turning off push notifications</li>
-<li>Restricting sharing of your location</li>
-<li>Enabling "Snooze Mode" to hide your profile from discovery</li>
-</ul>
-<p>Depending on your location, you may have additional rights under local privacy laws:</p>
-
-<h3>Access and Portability</h3>
-<p>You may request certain copies of your personal information held by us. In certain instances, you also have the right to request copies of personal information that you have provided to us in a structured, commonly used, and machine-readable format and/or request us to transmit this information to another service provider (where technically feasible).</p>
-
-<h3>Rectification</h3>
-<p>You may ask us to correct inaccurate or incomplete personal information about you (and which you cannot update yourself within your Tapin account).</p>
-
-<h3>Erasure</h3>
-<p>We generally retain your personal information for as long as is necessary for the performance of the contract between you and us, to comply with our legal obligations, and as permitted by applicable law. You may ask us to delete your personal information, subject to certain limitations and restrictions. Verification images are retained only for as long as necessary for safety and fraud prevention purposes. You can request the deletion of your verification images at any time by contacting us at tapinappmobile@gmail.com.</p>
-<p>Please note that if you request the erasure of your personal information, we may retain certain information about you:</p>
-<ul>
-<li>As necessary for our legitimate business interests and safety, such as prevention of money laundering, fraud detection and prevention, and enhancing safety</li>
-<li>To the extent necessary to comply with our legal, tax, reporting, and auditing obligations</li>
-</ul>
-
-<h3>Withdrawing Consent</h3>
-<p>If we are processing your personal information based on your consent, you can withdraw your consent at any time by changing your account settings or, consistent with applicable law, by emailing tapinappmobile@gmail.com specifying which consent you are withdrawing. Please note that the withdrawal of your consent does not affect the lawfulness of any processing activities based on such consent before its withdrawal.</p>
-
-<h3>Restriction of Processing</h3>
-<p>You may ask us to limit the ways in which we use your personal information, in particular where (i) you contest the accuracy of your personal information, (ii) the processing is unlawful and you oppose the erasure of your personal information, (iii) we no longer need your personal information for the purposes of the processing, but you require the personal information for the establishment, exercise, or defence of legal claims, or (iv) you have objected to the processing and pending the verification whether the legitimate grounds of Tapin override your own.</p>
-
-<h3>Objection to Processing</h3>
-<p>You may contact us to tell us that you object to the processing of your personal information based on grounds specific to your situation if such processing is for direct marketing or is for a purpose based on a legitimate interest or public interest. If you object to processing based on legitimate or public interests, we will no longer process your personal information for these purposes unless we have compelling legitimate grounds for such processing or where the processing is otherwise lawful or required for the establishment, exercise, or defence of legal claims. To submit an objection, you may send us an email at tapinappmobile@gmail.com.</p>
-
-<h3>Opting Out of Personalized Advertising</h3>
-<p>We do not show personalized ads in the Tapin app and we do not sell or share personal information for cross-context behavioral advertising.</p>
-
-<h3>Opt-Out Signals</h3>
-<p>We strive to honor opt-out preference signals where required by applicable law. When we detect an opt-out preference signal, we will make reasonable efforts to honor such opt outs for jurisdictions that require them. Please note that your opt-out preference signal might only apply to the particular browser, device, or technology that you use to opt-out.</p>
-
-<h2>8. DATA RETENTION</h2>
-<p>We retain personal information for as long as needed or as permitted in light of the purpose(s) for which it was obtained and further processed and consistent with applicable law. The criteria used to determine our retention periods include:</p>
-<ul>
-<li>The length of time we have an ongoing relationship with you and provide services to you, what activities you engage in on the platform, and the length of time during which we may have a legitimate need to retain your personal information, such as to manage and protect our business, to address issues or defend claims that may arise</li>
-<li>Whether there is a legal, tax, reporting, or auditing obligation to which we are subject, such as anti-money laundering requirements that requires us to keep records for a certain period of time before we can delete them</li>
-<li>Whether retention is advisable in light of our legal position or to protect the safety of individuals, which includes retention that is required or prudent in accordance with applicable statutes of limitations, litigation, or regulatory investigations</li>
-</ul>
-
-<h3>Residual Copies</h3>
-<p>Because we take measures to protect data from accidental or malicious loss and destruction, residual copies of your personal information may not be removed from our backup systems for a limited period of time.</p>
-
-<h2>9. INTERNATIONAL DATA TRANSFERS</h2>
-<p>As a global platform, we may transfer, store, and process your information with partners and service providers based in Europe, Asia Pacific, and North and South America, including the United States. Laws in these countries may differ from the laws applicable to your country of residence. In certain circumstances, courts, law enforcement agencies, regulatory agencies, or security authorities in these other countries may be entitled to access your personal information. Where necessary, measures have been taken pursuant to applicable data protection law, such as standard contractual clauses, to protect this personal data. When we transfer personal data from the EEA/UK to countries without an adequacy decision (e.g., the U.S.), we rely on the European Commission’s Standard Contractual Clauses (and the UK IDTA/Addendum, as applicable).</p>
-
-<h2>10. CALIFORNIA "SHINE THE LIGHT" LAW</h2>
-<p>California residents may request information about whether we disclose personal data to third parties for their direct marketing purposes. Tapin does not sell or share personal data with third parties for their direct marketing purposes.</p>
-<p>If you have questions about how we handle your data, contact us at tapinappmobile@gmail.com.</p>
-
-<h2>11. CHILDREN'S PRIVACY</h2>
-<p>Our service is not intended for users under 18 years of age. We do not knowingly collect personal information from children under 18. If we become aware of such collection, we will delete the information promptly.</p>
-
-<h2>12. CHANGES TO THIS PRIVACY POLICY</h2>
-<p>We may modify this Privacy Policy at any time in accordance with applicable law. When we do, we will post the revised version within the app and on our website and update the "Last Updated" date at the top. For material changes, we may also notify you by email, in-app message, or other reasonable means. Your continued use of Tapin after the updated version is posted constitutes your acceptance of the revised Privacy Policy.</p>
-
-<h2>13. CONTACT INFORMATION</h2>
-<p>If you have questions, concerns, or requests regarding this Privacy Policy or your personal information, please contact us:</p>
-<p><strong>Email:</strong> tapinappmobile@gmail.com</p>
-<p><strong>Mailing Address:</strong><br>
-OfftheGrid App LLC<br>
-1700 Willow Creek Dr<br>
-Austin, Texas 78741<br>
-United States of America</p>
-
-<p><strong>For Users in the EU/EEA</strong><br>
-OfftheGrid App LLC is the data controller responsible for your personal data. EU users may contact us at tapinappmobile@gmail.com for any privacy-related questions or to exercise their data rights. You also have the right to lodge a complaint with your local supervisory authority.</p>
-
-</section>
-
-<footer>
-© 2026 OfftheGrid App LLC — Tapin Privacy Policy
-</footer>
+  <div class="footer">&copy; 2026 Smilely Inc. All rights reserved.</div>
 </div>
 </body>
 </html>
-`;
+  `;
+};
+
+const smilelySupport = () => {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smilely Support</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f7f8fb;
+    margin: 0;
+    padding: 32px;
+    color: #0f172a;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  }
+  h1 { font-size: 26px; color: #2563eb; margin-bottom: 8px; }
+  .subtitle { font-size: 16px; color: #475569; margin-bottom: 24px; line-height: 1.6; }
+  h2 { font-size: 19px; margin: 28px 0 12px; color: #1e293b; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
+  h3 { font-size: 16px; margin: 20px 0 8px; color: #334155; }
+  p, li { font-size: 15px; color: #334155; }
+  ul { padding-left: 24px; margin-bottom: 16px; }
+  li { margin-bottom: 6px; }
+  .contact-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .contact-box p { margin: 6px 0; }
+  .email-link { font-size: 18px; font-weight: 600; color: #2563eb; display: inline-block; margin: 8px 0; }
+  .email-btn {
+    display: inline-block;
+    margin-top: 14px;
+    background-color: #2563eb;
+    color: #ffffff !important;
+    padding: 10px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  .email-btn:hover {
+    background-color: #1d4ed8;
+  }
+  a { color: #2563eb; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .footer { text-align: center; margin-top: 40px; font-size: 13px; color: #6b7280; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Smilely Support</h1>
+  <p class="subtitle">Need help with Smilely? We&apos;re here to help with account issues, reminders, brushing goals, progress, or any technical problems.</p>
+
+  <h2>Contact Support</h2>
+  <div class="contact-box">
+    <p>For support, contact us at:</p>
+    <p><a class="email-link" href="mailto:support@smilelyapp.com">support@smilelyapp.com</a></p>
+    <p style="color: #64748b; font-size: 14px; margin-top: 8px;">Please include your device, app version, and a short description of the issue.</p>
+    <a class="email-btn" href="mailto:support@smilelyapp.com?subject=Smilely%20Support%20Request">Email Support</a>
+  </div>
+
+  <h2>Common Help Topics</h2>
+  <ul>
+    <li><strong>Account &amp; Sign-In:</strong> Issues signing in with Apple, Google, or email.</li>
+    <li><strong>Brushing Sessions &amp; Goals:</strong> Managing brushing routines, timers, and tracking daily sessions.</li>
+    <li><strong>Streaks &amp; Achievements:</strong> Points, streaks, and achievement badges synchronization.</li>
+    <li><strong>Reminders &amp; Notifications:</strong> Setting up or adjusting your daily brushing reminder schedule.</li>
+    <li><strong>Account Deletion:</strong> Removing your account and personal data.</li>
+  </ul>
+
+  <div class="footer">&copy; 2026 Smilely Inc. All rights reserved.</div>
+</div>
+</body>
+</html>
+  `;
 };
 
 const tapinTermsOfService = () => {
@@ -900,7 +800,11 @@ const accountDelete = () => {
 export const configRoutes = Router();
 
 configRoutes.get("/privacy-policy", (_req, res) => {
-  res.type("html").send(tapinPrivacyPolicy());
+  res.type("html").send(smilelyPrivacyPolicy());
+});
+
+configRoutes.get("/support", (_req, res) => {
+  res.type("html").send(smilelySupport());
 });
 
 configRoutes.get("/terms-condition", (_req, res) => {
@@ -918,3 +822,4 @@ configRoutes.get("/account-delete", (_req, res) => {
 configRoutes.get("/stripe-onboarding-success", (_req, res) => {
   res.type("html").send(stripeOnboardingSuccess());
 });
+
