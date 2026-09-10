@@ -6,3 +6,4 @@ export const entryMessage = (_req: Request, res: Response) => {
     message: "Welcome to backend server!!!",
   });
 };
+

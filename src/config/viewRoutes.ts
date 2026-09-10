@@ -415,6 +415,316 @@ const smilelyMarketing = () => {
   `;
 };
 
+const smilelyHomeLandingPage = () => {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smilely — Daily Dental Habit Tracker</title>
+<meta name="description" content="Smilely is your daily dental companion for building consistent, rewarding brushing habits with smart timers, streaks, and achievements.">
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding: 0;
+  }
+  header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+  }
+  .nav-container {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .brand-icon {
+    font-size: 24px;
+  }
+  nav {
+    display: flex;
+    gap: 20px;
+  }
+  nav a {
+    color: #475569;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  nav a:hover {
+    color: var(--primary);
+  }
+  .container {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+  .hero {
+    text-align: center;
+    padding: 40px 0 50px;
+  }
+  .badge {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e40af;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    line-height: 1.2;
+    color: var(--text-main);
+    margin-bottom: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 span {
+    color: var(--primary);
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 auto 30px;
+  }
+  .cta-group {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .btn-primary {
+    background-color: var(--primary);
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background-color: var(--primary-hover);
+  }
+  .btn-secondary {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    background-color: #f1f5f9;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin: 40px 0;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  }
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #1e293b;
+  }
+  .card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .links-section {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-top: 40px;
+  }
+  .links-section h2 {
+    font-size: 18px;
+    color: #1e293b;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .status-pill {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10b981;
+  }
+  .link-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .link-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .link-pill:hover {
+    background: #e2e8f0;
+    color: var(--primary);
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+    background: #ffffff;
+    margin-top: 60px;
+  }
+  footer a {
+    color: #475569;
+    text-decoration: none;
+    margin: 0 8px;
+  }
+  footer a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 30px; }
+    .hero p { font-size: 16px; }
+    nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <a href="/home" class="brand">
+      <span class="brand-icon">✨</span> Smilely
+    </a>
+    <nav>
+      <a href="/marketing">About</a>
+      <a href="/support">Support</a>
+      <a href="/privacy-policy">Privacy</a>
+      <a href="/terms-condition">Terms</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <div class="badge">Healthy Smiles Start Here</div>
+    <h1>Build Better Brushing Habits with <span>Smilely</span></h1>
+    <p>Your intelligent daily dental care companion. Track your daily brushing routines, earn achievements, and maintain streaks for a healthier, brighter smile.</p>
+    <div class="cta-group">
+      <a href="/marketing" class="btn btn-primary">Discover Features</a>
+      <a href="/support" class="btn btn-secondary">Support Center</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">⏱️</div>
+      <h3>Smart Timer</h3>
+      <p>Follow a dentists-recommended 2-minute brushing routine with real-time feedback and clean quadrant pacing.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔥</div>
+      <h3>Streaks &amp; Habits</h3>
+      <p>Keep your daily morning and night brushing streaks alive to build lifelong dental hygiene habits.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏆</div>
+      <h3>Points &amp; Milestones</h3>
+      <p>Earn points for every completed session and unlock milestone badges as your consistency grows.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔔</div>
+      <h3>Custom Reminders</h3>
+      <p>Tailored morning and bedtime notifications ensure you never miss a brushing session.</p>
+    </div>
+  </div>
+
+  <section class="links-section">
+    <h2><span class="status-pill"></span> Smilely Application &amp; API Services</h2>
+    <div class="link-pills">
+      <a class="link-pill" href="/marketing">📢 Marketing &amp; Overview</a>
+      <a class="link-pill" href="/privacy-policy">🛡️ Privacy Policy</a>
+      <a class="link-pill" href="/support">💬 Support Page</a>
+      <a class="link-pill" href="/terms-condition">📄 Terms of Service</a>
+      <a class="link-pill" href="/account-delete">🗑️ Account Deletion</a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p style="margin-bottom: 8px;">
+    <a href="/home">Home</a> &bull;
+    <a href="/marketing">Marketing</a> &bull;
+    <a href="/privacy-policy">Privacy Policy</a> &bull;
+    <a href="/support">Support</a> &bull;
+    <a href="/terms-condition">Terms of Service</a> &bull;
+    <a href="/account-delete">Account Deletion</a>
+  </p>
+  <p>&copy; 2026 Smilely Inc. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+  `;
+};
+
 const tapinTermsOfService = () => {
   return `
   <!doctype html>
@@ -946,6 +1256,10 @@ const accountDelete = () => {
 };
 
 export const configRoutes = Router();
+
+configRoutes.get("/home", (_req, res) => {
+  res.type("html").send(smilelyHomeLandingPage());
+});
 
 configRoutes.get("/privacy-policy", (_req, res) => {
   res.type("html").send(smilelyPrivacyPolicy());
