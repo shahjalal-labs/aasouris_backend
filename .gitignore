@@ -4,3 +4,12 @@ dist
 module.js
 *.lock
 logger
+
+# Keep secrets out of version control
+.env
+.env.*
+!.env.example
+*.env
+http-client.env.json
+*.key
+*.pem
