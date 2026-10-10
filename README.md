@@ -1,4 +1,4 @@
-# 🛒 Aasouris — High-Throughput E-Commerce & Logistics API
+# ⭐ Aasouris — Gamified Children's Daily Routine, Habit Building & Hero Level Progression API
 
 ![Architecture Banner](./assets/banner.svg)
 
@@ -17,8 +17,8 @@
   <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
   <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma" />
   <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
-  <img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
-  <img src="https://img.shields.io/badge/Logistics_Engine-10B981?style=for-the-badge&logo=truck&logoColor=white" alt="Logistics_Engine" />
+  <img src="https://img.shields.io/badge/Firebase_FCM-FFCA28?style=for-the-badge&logo=firebase&logoColor=white" alt="Firebase_FCM" />
+  <img src="https://img.shields.io/badge/Gamification-EC4899?style=for-the-badge&logo=award&logoColor=white" alt="Gamification" />
   
 </p>
 
@@ -26,17 +26,17 @@
 
 ## 📌 Executive Overview
 
-Aasouris powers multi-tenant e-commerce operations, comprehensive inventory catalogs, real-time cart state management, order fulfillment pipelines, and automated Stripe billing.
+**Aasouris Backend** (Smiley) is a behavioral habit-building and daily routine gamification engine tailored for children and parents. Built with **Node.js, TypeScript, Express, Prisma ORM, and Firebase Cloud Messaging (FCM)**, the platform motivates kids to accomplish essential morning and bedtime routines (brushing teeth, making bed, reading, sleep preparation). By completing daily sessions, children earn stars, level up their chosen superhero avatars, unlock celebratory milestones, and receive encouraging push notification reminders configured by parents.
 
 ---
 
-## 🚀 Key Architectural Highlights
+## 🚀 Key Architectural & Domain Capabilities
 
-- **Catalog & Inventory**: Atomic inventory decrementing to prevent overselling under high concurrency.
-- **Cart & Checkout**: Flexible cart state with real-time tax calculation, coupon validation, and Stripe checkout.
-- **Order Tracking**: Automated order lifecycle status machine (Pending, Processing, Shipped, Delivered).
-- **Merchant Management**: Multi-vendor listing approvals, commission tracking, and payout auditing.
-- **Secure Infrastructure**: JWT auth rotation, rate limiting, and defensive input sanitization.
+- **Morning & Night Routine Sessions**: Timezone-aware daily routine tracking (`Session`) preventing duplicate completions per calendar day.
+- **Hero Avatar & Level Progression**: Choose customizable hero companions; earn stars to level up through structured reward tiers (`level`).
+- **Parental Routine Scheduling**: Configurable morning and bedtime reminder alarms dispatched via Firebase Cloud Messaging push notifications.
+- **Apple & Google Social Sign-In**: Streamlined family onboarding supporting Apple ID, Google OAuth, and secure email authentication.
+- **Reward Milestone History**: Historical log of earned stars, completed streaks, and level unlocking celebrations.
 
 ---
 
@@ -45,17 +45,17 @@ Aasouris powers multi-tenant e-commerce operations, comprehensive inventory cata
 The complete REST API specification is published in our public Postman showcase workspace:
 
 * 🌐 **Instant Live API Documentation**: [Explore aasouris_backend in Postman (Instant Web View)](https://www.postman.com/shahjalal-backend-9458759/shahjalal-api-portfolio/collection/48491387-9c39373e-bb89-4020-a94f-6329ec40af00)
-* 📁 **Local Postman File**: [`docs/postman_collection.json`](./docs/postman_collection.json) (import directly into Postman Desktop or Newman CLI).
+* 📁 **Local Postman File**: [`docs/postman_collection.json`](./docs/postman_collection.json) (ready for Postman Desktop or Newman CLI).
 
 ### Core Endpoint Modules
 
 | Module | Base Route | Key Capabilities |
 |---|---|---|
-| **Authentication** | `/api/v1/auth` | Customer & Merchant onboarding, JWT session management |
-| **Products** | `/api/v1/product` | Product catalog, multi-attribute variants, category trees |
-| **Cart & Orders** | `/api/v1/order` | Shopping cart state, checkout initiation, order fulfillment |
-| **Payments** | `/api/v1/payment` | Stripe payment intents, webhooks, and refund processing |
-| **Logistics** | `/api/v1/shipping` | Shipping carrier calculation, tracking number assignment |
+| **Authentication** | `/api/v1/auth` | Family onboarding, Apple ID & Google authentication, JWT token refresh |
+| **User & Hero Profile** | `/api/v1/user` | Hero avatar selection, star balances, morning/night reminder schedule |
+| **Routine Sessions** | `/api/v1/session` | Log morning and bedtime routine completions, validate calendar day keys |
+| **Hero Levels** | `/api/v1/level` | Level progression ladder, star requirements, rank order management |
+| **Notifications** | `/api/v1/notification` | In-app alerts and FCM push notifications for routine wake-up and bedtime |
 
 ---
 
@@ -64,18 +64,18 @@ The complete REST API specification is published in our public Postman showcase 
 ```plaintext
 aasouris_backend/
 ├── assets/
-│   └── banner.*                 # Project architecture visual banner
+│   └── banner.svg               # Architectural visual banner
 ├── docs/
 │   └── postman_collection.json  # Full Postman API collection v2.1
 ├── src/
 │   ├── app/
 │   │   ├── middlewares/         # Global error handlers, auth & validation guards
-│   │   ├── modules/             # Domain-driven feature modules
-│   │   └── routes/              # Centralized route aggregator
+│   │   ├── modules/             # Domain feature modules
+│   │   └── routes/              # Centralized route registration
 │   ├── config/                  # Environment & external service configurations
-│   └── server.ts                # Application bootstrapper & HTTP server
+│   └── server.ts                # Application bootstrapper
 ├── prisma/
-│   └── schema.prisma            # Database schema definition
+│   └── schema.prisma            # Prisma database schema definition
 ├── .env.example                 # Sanitized environment template
 ├── package.json
 └── tsconfig.json
@@ -96,13 +96,12 @@ cd aasouris_backend
 npm install
 ```
 
-### 2. Environment Configuration
-Copy the provided `.env.example` file to create your local `.env`:
+### 2. Configure Environment Variables
 ```bash
 cp .env.example .env
 ```
 
-### 3. Initialize Prisma Client
+### 3. Generate Prisma Client
 ```bash
 npx prisma generate
 ```
@@ -116,7 +115,7 @@ npm run dev
 
 ## 👨‍💻 Engineering & Authorship
 
-Developed and maintained by **Md. Shahjalal**.
+Developed and engineered by **Md. Shahjalal**.
 
 * **GitHub**: [@shahjalal-labs](https://github.com/shahjalal-labs)
 * **Email**: [muhommodshahjalal@gmail.com](mailto:muhommodshahjalal@gmail.com)
